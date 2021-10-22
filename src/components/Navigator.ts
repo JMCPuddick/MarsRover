@@ -9,6 +9,7 @@ export class Navigator {
     currentPosition: Vector2;
     currentBearing: Bearing;
     validArea: Vector2;
+    moveSpeed = 1;
 
     constructor(currentPosition: Vector2, currentBearing: Bearing, validArea: Vector2) {
         this.currentPosition = currentPosition;
@@ -16,14 +17,23 @@ export class Navigator {
         this.validArea = validArea;
     }
 
-    updateLocation(position: Vector2, bearing: Bearing) {
+    UpdateLocation(position: Vector2, bearing: Bearing) {
         this.currentPosition = position;
         this.currentBearing = bearing;
     }
 
+    ProcessCommand(command: string) {
+        if(command === "M") {
+            //We move forward one space with the current bearing
+            this.currentPosition = this.Move(this.moveSpeed, this.currentBearing, this.currentPosition);
+        } else if (command === "L" || command === "R") {
+            this.currentBearing = this.Rotate(command, this.currentBearing);
+        }
+    }
+
     //M is move forward
     // TODO -- Could make turn commands a more strict type than just string.
-    UpdateBearing(turnCommand: string, currentBearing: Bearing) {
+    Rotate(turnCommand: string, currentBearing: Bearing):Bearing {
         //Gets the current index of the current bearing, for some fun numerical rotation.
         let bearingCounter: number = Object.keys(Bearing).indexOf(currentBearing.toString());
         let newBearing: number = 0;
@@ -49,7 +59,31 @@ export class Navigator {
         if(newBearing < 0) newBearing = 3;
         if(newBearing > 3) newBearing = 0;
 
-        return Bearing[newBearing];
+        return this.GetBearing(newBearing);
+    }
+
+    /**
+     * A bit of a fudge, didn't have time to go back and fix up enum limitations with something better so used this to tie a loose end.
+     * @param bNum number of rotational index.
+     */
+    GetBearing(bNum: number) {
+        switch(bNum) {
+            case 0: {
+                return Bearing.N;
+            }
+            case 1: {
+                return Bearing.E;
+            }
+            case 2: {
+                return Bearing.S;
+            }
+            case 3: {
+                return Bearing.W;
+            }
+            default: {
+                return Bearing.N;
+            }
+        }
     }
 
     Move(amount: number, bearing: Bearing, currentPosition: Vector2) {
@@ -61,19 +95,19 @@ export class Navigator {
         switch (bearing) {
             case Bearing.N : {
                 //North move
-                tryPosition.y = currentPosition.y + 1;
+                tryPosition.y = currentPosition.y + amount;
                 break;
             }
             case Bearing.E : {
-                tryPosition.x = currentPosition.x + 1;
+                tryPosition.x = currentPosition.x + amount;
                 break;
             }
             case Bearing.S : {
-                tryPosition.y = currentPosition.y - 1;
+                tryPosition.y = currentPosition.y - amount;
                 break;
             }
             case Bearing.W : {
-                tryPosition.x = currentPosition.x - 1;
+                tryPosition.x = currentPosition.x - amount;
                 break;
             }
             default : {

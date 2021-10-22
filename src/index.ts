@@ -1,14 +1,18 @@
-console.log('Hello Mars!');
-
+import { MissionController } from './controllers';
 import { Bearing, Vector2 } from './core';
 import { InputParser, PlateauManager } from './services';
+import { readFile, readFileSync } from 'fs';
+
+const input = readFileSync('./src/input.txt', 'utf8');
+
 let gridSizeInput: string = "5 5";
 let MartianPlateau;
+let missionController: MissionController = new MissionController(InputParser.ToVector2(gridSizeInput));
+let commandsArray = InputParser.SplitLines(input);
 
 const Awake = () => {
     // Initialisation Code
-    let bearing = Bearing.N;
-    const plateauSize: Vector2 | boolean = InputParser.ToVector2(gridSizeInput);
+    const plateauSize: Vector2 = InputParser.ToVector2(gridSizeInput);
 
     if(plateauSize) {
         MartianPlateau = PlateauManager.create(plateauSize);
@@ -18,3 +22,8 @@ const Awake = () => {
 }
 
 Awake();
+
+console.log(missionController.rovers);
+console.log(missionController.rovers[1]);
+
+console.log(commandsArray);

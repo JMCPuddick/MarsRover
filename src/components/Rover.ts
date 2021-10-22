@@ -8,11 +8,12 @@ export class Rover {
 
     bearing:Bearing = Bearing.N; //Default to face north
 
-    navigator: Navigator = new Navigator(this.position, this.bearing, this.bounds);
+    navigator: Navigator;
 
     constructor(bounds: Vector2, position: Vector2, bearing: Bearing) {
         this.bounds = bounds;
         this.position = position;
         this.bearing = bearing;
+        this.navigator = new Navigator(position, bearing, bounds);
     }
 }
