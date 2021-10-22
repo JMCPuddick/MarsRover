@@ -1,0 +1,36 @@
+{
+  "name": "MarsRover",
+  "version": "1.0.0",
+  "description": "Mars based coding challenge",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf ./build && tsc",
+    "start:dev": "nodemon",
+    "start": "npm run build && node build/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JMCPuddick/MarsRover.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JMCPuddick/MarsRover/issues"
+  },
+  "homepage": "https://github.com/JMCPuddick/MarsRover#readme",
+  "devDependencies": {
+    "@babel/core": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
+    "@babel/preset-typescript": "^7.15.0",
+    "@types/jest": "^27.0.2",
+    "@types/node": "^16.11.3",
+    "babel-jest": "^27.3.1",
+    "jest": "^27.3.1",
+    "nodemon": "^2.0.14",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.3.1",
+    "typescript": "^4.4.4"
+  }
+}
