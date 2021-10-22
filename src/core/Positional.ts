@@ -4,8 +4,8 @@ export enum TileStates {
 }
 
 export enum Bearing {
-    N = "N",
-    E = "E",
-    S = "S",
-    W = "W"
+    N,
+    E,
+    S,
+    W
 }

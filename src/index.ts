@@ -1,12 +1,13 @@
 console.log('Hello Mars!');
 
-import { Vector2 } from './core';
+import { Bearing, Vector2 } from './core';
 import { InputParser, PlateauManager } from './services';
 let gridSizeInput: string = "5 5";
 let MartianPlateau;
 
 const Awake = () => {
     // Initialisation Code
+    let bearing = Bearing.N;
     const plateauSize: Vector2 | boolean = InputParser.ToVector2(gridSizeInput);
 
     if(plateauSize) {
