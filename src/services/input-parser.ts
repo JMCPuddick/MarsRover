@@ -1,7 +1,7 @@
 import { Vector2 } from "../core";
 
 export class InputParser {
-    AsVector2(input:string) {
+    static ToVector2(input:string) {
         //input in format x, y
         const parsedInput: String[] = input.split(' ');
 
