@@ -1,4 +1,4 @@
-import { Vector2 } from "../core";
+import { Bearing, Vector2 } from "../core";
 
 export class InputParser {
     /**
@@ -15,6 +15,10 @@ export class InputParser {
         return new Vector2(newX, newY);
     }
 
+    static Vector2FromStrings(x: string, y: string) {
+        return new Vector2(+x, +y);
+    }
+
     //In this case, I have decided we will simply omit any invalid commands
     static ProcessLine(inputLine: String) {
         const commandArray = inputLine.split('');
@@ -25,6 +29,60 @@ export class InputParser {
         });
 
         return validCommands;
+    }
+
+    static GetCoordinates(input: string) {
+        let xyb = input.split(' ');
+        return this.Vector2FromStrings(xyb[0], xyb[1]);
+    }
+
+    static GetBearingFromCommand(input: string) {
+        let xyb = input.split(' ');
+        return this.ParseBearingFromString(xyb[2]);
+    }
+
+    /**
+     * A bit of a fudge, didn't have time to go back and fix up enum limitations with something better so used this to tie a loose end.
+     * @param bNum number of rotational index.
+     */
+    static GetBearingFromIndex(bNum: number) {
+        switch(bNum) {
+            case 0: {
+                return Bearing.N;
+            }
+            case 1: {
+                return Bearing.E;
+            }
+            case 2: {
+                return Bearing.S;
+            }
+            case 3: {
+                return Bearing.W;
+            }
+            default: {
+                return Bearing.N;
+            }
+        }
+    }
+
+    static ParseBearingFromString(point: string) {
+        switch (point) {
+            case "N": {
+                return Bearing.N;
+            }
+            case "E": {
+                return Bearing.E;
+            }
+            case "S": {
+                return Bearing.S;
+            }
+            case "W": {
+                return Bearing.W;
+            }
+            default: {
+                return Bearing.N;
+            } 
+        }
     }
 
     static SplitLines(inputBody: string) {

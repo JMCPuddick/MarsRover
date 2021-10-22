@@ -1,4 +1,4 @@
-import { isValidMove } from "../services";
+import { InputParser, isValidMove } from "../services";
 import { Bearing } from "../core/Positional";
 import { Vector2 } from "../core/Vector2";
 
@@ -17,11 +17,30 @@ export class Navigator {
         this.validArea = validArea;
     }
 
+    /**
+     * Update the rovers location or rotation manually.
+     * @param position A new position to update to
+     * @param bearing A new direction to face (N, E, S or W)
+     */
     UpdateLocation(position: Vector2, bearing: Bearing) {
         this.currentPosition = position;
         this.currentBearing = bearing;
     }
 
+    /**
+     * Process a list of commands in order, one by one.
+     * @param commands an array of single commands to iterate through and process in turn.
+     */
+    ProcessCommandGroup(commands: string[]) {
+        commands.forEach(c => {
+            this.ProcessCommand(c);
+        });
+    }
+
+    /**
+     * Process a single rotation or movement command.
+     * @param command A single string command to process, move or rotate
+     */
     ProcessCommand(command: string) {
         if(command === "M") {
             //We move forward one space with the current bearing
@@ -33,6 +52,11 @@ export class Navigator {
 
     //M is move forward
     // TODO -- Could make turn commands a more strict type than just string.
+    /**
+     * 
+     * @param turnCommand The instruction to turn either 90deg left or 90deg right.
+     * @param currentBearing The current direction the rover is facing.
+     */
     Rotate(turnCommand: string, currentBearing: Bearing):Bearing {
         //Gets the current index of the current bearing, for some fun numerical rotation.
         let bearingCounter: number = Object.keys(Bearing).indexOf(currentBearing.toString());
@@ -59,35 +83,16 @@ export class Navigator {
         if(newBearing < 0) newBearing = 3;
         if(newBearing > 3) newBearing = 0;
 
-        return this.GetBearing(newBearing);
+        return InputParser.GetBearingFromIndex(newBearing);
     }
 
     /**
-     * A bit of a fudge, didn't have time to go back and fix up enum limitations with something better so used this to tie a loose end.
-     * @param bNum number of rotational index.
+     * 
+     * @param amount Amount to move by. Goverened by a rovers speed stat, defaults to 1.
+     * @param bearing The direction of travel.
+     * @param currentPosition The current position as a reference point.
      */
-    GetBearing(bNum: number) {
-        switch(bNum) {
-            case 0: {
-                return Bearing.N;
-            }
-            case 1: {
-                return Bearing.E;
-            }
-            case 2: {
-                return Bearing.S;
-            }
-            case 3: {
-                return Bearing.W;
-            }
-            default: {
-                return Bearing.N;
-            }
-        }
-    }
-
     Move(amount: number, bearing: Bearing, currentPosition: Vector2) {
-        console.log(`Moving by ${amount} with bearing ${bearing}`);
         // Bearing in this case simply tells us which direction we are moving 
         // (the rover may be facing another way, but that's okay, we'll only ever ut the same direction as its curent bearing, but we can support sidestepping or reversing this way)
         var tryPosition = new Vector2(currentPosition.x, currentPosition.y);
@@ -118,6 +123,5 @@ export class Navigator {
 
         // Failed to move, just return the current position Vector2
         return currentPosition;
-
     }
 }

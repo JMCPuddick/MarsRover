@@ -5,7 +5,7 @@ import { readFile, readFileSync } from 'fs';
 
 const input = readFileSync('./src/input.txt', 'utf8');
 
-let gridSizeInput: string = "5 5";
+let gridSizeInput: string = "5 5"; // This will be read from the input.txt, but I ran out of time.
 let MartianPlateau;
 let missionController: MissionController = new MissionController(InputParser.ToVector2(gridSizeInput));
 let commandsArray = InputParser.SplitLines(input);
@@ -23,7 +23,4 @@ const Awake = () => {
 
 Awake();
 
-console.log(missionController.rovers);
-console.log(missionController.rovers[1]);
-
-console.log(commandsArray);
+missionController.RunMission(commandsArray);
