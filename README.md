@@ -34,10 +34,10 @@ To run the project type any one of the following:
 
 # Next steps
 *There are a number of improvements and extensions I considered during this exercise:*
-A burning next step for myself during this exercise was to be able to visualise both the grid and the rovers' positions on that grid on a UI. A React UI could start simple and be quickly extended. This would also help visualise and debug the rovers' movements.
-Another improvement could be to validate whether a tile is occupied by another rover or not, as they can currently stack. A structure of tile informatin added to the plateau class could help with this. We could track the state of a tile, and add additional statuses to them to allow for perhaps difficult terrain, impassable objects etc.
-I felt that some further work could be done around validation, there are still some assumptions that the code makes in terms of order of command strings. Whil effort has been made to guard against malformed line structures, there is little guarding against input files where commands are not in the expected order.
-A database to store rovers, to support multiple fleets, and also multiple missions. The MissionController class could have a service that will fetch a given missions details and associated fleet and process a command list on that.
-Feedback for users, if a rover is unable to make a move, would they stop there? Would they carry on with the mission where possible? Some feedback to users would be good, so that we can make a decision when a rover has hit a boundary for example.
+ + A burning next step for myself during this exercise was to be able to visualise both the grid and the rovers' positions on that grid on a UI. A React UI could start simple and be quickly extended. This would also help visualise and debug the rovers' movements.
+ + Another improvement could be to validate whether a tile is occupied by another rover or not, as they can currently stack. A structure of tile informatin added to the plateau class could help with this. We could track the state of a tile, and add additional statuses to them to allow for perhaps difficult terrain, impassable objects etc.
+ + I felt that some further work could be done around validation, there are still some assumptions that the code makes in terms of order of command strings. Whil effort has been made to guard against malformed line structures, there is little guarding against input files where commands are not in the expected order.
+ + A database to store rovers, to support multiple fleets, and also multiple missions. The MissionController class could have a service that will fetch a given missions details and associated fleet and process a command list on that.
+ + Feedback for users, if a rover is unable to make a move, would they stop there? Would they carry on with the mission where possible? Some feedback to users would be good, so that we can make a decision when a rover has hit a boundary for example.
 Different types of rovers, by switching out the Navigator class, we can have rovers that can move differently over terrain and calculate their movements differently.
 
