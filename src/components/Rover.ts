@@ -18,7 +18,15 @@ export class Rover {
         this.navigator = new Navigator(position, bearing, bounds);
     }
 
+    UpdatePosition() {
+        this.position = this.navigator.currentPosition;
+    }
+
+    UpdateBearing() {
+        this.bearing = this.navigator.currentBearing;
+    }
+
     ShowLocation() {
-        console.log(`${this.position.x} ${this.position.y} ${this.bearing}`)
+        console.log(`${this.position.x} ${this.position.y} ${this.bearing}`);
     }
 }

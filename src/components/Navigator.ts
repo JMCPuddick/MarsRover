@@ -22,9 +22,9 @@ export class Navigator {
      * @param position A new position to update to
      * @param bearing A new direction to face (N, E, S or W)
      */
-    UpdateLocation(position: Vector2, bearing: string) {
-        this.currentPosition = position;
-        this.currentBearing = bearing;
+    UpdateLocation(position?: Vector2, bearing?: string) {
+        if(position) this.currentPosition = position;
+        if(bearing) this.currentBearing = bearing;
     }
 
     /**
@@ -44,10 +44,11 @@ export class Navigator {
     ProcessCommand(command: string) {
         if(command === "M") {
             //We move forward one space with the current bearing
-            this.currentPosition = this.Move(this.moveSpeed, this.currentBearing, this.currentPosition);
+            this.UpdateLocation(this.Move(this.moveSpeed, this.currentBearing, this.currentPosition), undefined);
         } else if (command === "L" || command === "R") {
-            this.currentBearing = this.Rotate(command, this.currentBearing);
+            this.UpdateLocation(undefined, this.Rotate(command, this.currentBearing));
         }
+        console.log(`Nav position updated to: ${this.currentPosition.x}, ${this.currentPosition.y}, ${this.currentBearing}`)
     }
 
     //M is move forward
@@ -60,7 +61,7 @@ export class Navigator {
     Rotate(turnCommand: string, currentBearing: string):string {
         //Gets the current index of the current bearing, for some fun numerical rotation.
         let bearingCounter: number = Object.keys(Bearing).indexOf(currentBearing);
-        let newBearing: number = 0;
+        let newBearing: number = Object.keys(Bearing).indexOf(currentBearing); //initialise to current bearing, se we preserve existing if invalid
 
         switch(turnCommand) {
             case "L": {

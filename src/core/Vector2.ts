@@ -7,3 +7,7 @@ export class Vector2 {
         this.y = y;
     }
 }
+
+export function Vector2FromStrings(x: string, y: string) {
+    return new Vector2(+x, +y);
+}

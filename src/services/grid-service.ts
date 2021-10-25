@@ -1,4 +1,4 @@
-import { TileStates, Vector2 } from "../core";
+import { Vector2 } from "../core";
 
 export class Plateau {
     constructor(public width: number, public height: number) {}

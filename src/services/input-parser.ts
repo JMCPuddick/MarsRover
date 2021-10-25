@@ -1,11 +1,11 @@
-import { Bearing, Vector2 } from "../core";
+import { Bearing, Vector2, Vector2FromStrings } from "../core";
 
 export class InputParser {
     /**
-     * This will likely be a VERY flaky part of the program, additional validation would be needed
+     * Takes a coordinate string in format "x y" and returns a Vector2 coordinate
      * @param input string input to turn into a vector2 coordinate
      */
-    static ToVector2(input:string) {
+    static CoordinateToVector2(input:string) {
         //input in format x, y
         const parsedInput: String[] = input.split(' ');
 
@@ -15,12 +15,12 @@ export class InputParser {
         return new Vector2(newX, newY);
     }
 
-    static Vector2FromStrings(x: string, y: string) {
-        return new Vector2(+x, +y);
-    }
-
-    //In this case, I have decided we will simply omit any invalid commands
-    static ProcessLine(inputLine: String) {
+    /**
+     * //In this case, simply omit any invalid commands
+     * @param inputLine A single line of input as string, to be split.
+     * @returns a string array of single characters, representing individual move commands
+     */
+     static ProcessLine(inputLine: String): string[] {
         const commandArray = inputLine.split('');
         var validCommands:Array<string> = [];
 
@@ -31,18 +31,35 @@ export class InputParser {
         return validCommands;
     }
 
-    static GetCoordinates(input: string) {
+    /**
+     * 
+     * @param input A string of coordinates in the format "x y"
+     * @returns A vector2 representing a coordinate
+     */
+    static GetCoordinates(input: string): Vector2 {
         let xyb = input.split(' ');
-        return this.Vector2FromStrings(xyb[0], xyb[1]);
-    }
-
-    static GetBearingFromCommand(input: string) {
-        let xyb = input.split(' ');
-        return this.ParseBearingFromString(xyb[2]);
+        return Vector2FromStrings(xyb[0], xyb[1]);
     }
 
     /**
-     * A bit of a fudge, didn't have time to go back and fix up enum limitations with something better so used this to tie a loose end.
+     * Gets a bearing from a line of deployment commands
+     * @param input the absolute direction to face, a string of either N, E, S, or W
+     * @returns A string representing a compass direction
+     */
+    static GetBearingFromCommand(input: string) {
+            let xyb = input.split(' ');
+            //Make sure our command is long enough and it is a valid bearing TODO -- Extract out
+            if(xyb.length > 2 && Object.keys(Bearing).includes(xyb[2])) {
+                return xyb[2];
+            }
+            else {
+                return Bearing.N; // For now we will default to north if unable to find a new bearing
+            } 
+    }
+
+    // A bit of a fudge, there is likely a more elegant way of doing this with object literals
+    /**
+     * Gets a bearing from a rotational index (ie 0 is N, etc.)
      * @param bNum number of rotational index.
      */
     static GetBearingFromIndex(bNum: number) {
@@ -65,27 +82,12 @@ export class InputParser {
         }
     }
 
-    static ParseBearingFromString(point: string) {
-        switch (point) {
-            case "N": {
-                return Bearing.N;
-            }
-            case "E": {
-                return Bearing.E;
-            }
-            case "S": {
-                return Bearing.S;
-            }
-            case "W": {
-                return Bearing.W;
-            }
-            default: {
-                return Bearing.N;
-            } 
-        }
-    }
-
-    static SplitLines(inputBody: string) {
+    /**
+     * Gets the whole page of commands, and splits them by new line ready for categorising and processing in turn.
+     * @param inputBody The entire input body, usually the input from ReadFileSnc or other input source.
+     * @returns An array of individual lines, each represented as a string ready for further parsing.
+     */
+    static SplitCommandLines(inputBody: string): string[] {
         return inputBody.split(/\r?\n/);
     }
 }
