@@ -2,7 +2,7 @@ import { Bearing, Vector2 } from "../core";
 
 export class InputParser {
     /**
-     * This will likely be a VERY flaky part of the program, additiona validation would be needed
+     * This will likely be a VERY flaky part of the program, additional validation would be needed
      * @param input string input to turn into a vector2 coordinate
      */
     static ToVector2(input:string) {

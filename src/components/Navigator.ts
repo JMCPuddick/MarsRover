@@ -1,5 +1,5 @@
 import { InputParser, isValidMove } from "../services";
-import { Bearing } from "../core/Positional";
+import { Bearing } from "../core/Bearing";
 import { Vector2 } from "../core/Vector2";
 
 /**
@@ -7,11 +7,11 @@ import { Vector2 } from "../core/Vector2";
  */
 export class Navigator {
     currentPosition: Vector2;
-    currentBearing: Bearing;
+    currentBearing: string;
     validArea: Vector2;
     moveSpeed = 1;
 
-    constructor(currentPosition: Vector2, currentBearing: Bearing, validArea: Vector2) {
+    constructor(currentPosition: Vector2, currentBearing: string, validArea: Vector2) {
         this.currentPosition = currentPosition;
         this.currentBearing = currentBearing;
         this.validArea = validArea;
@@ -22,7 +22,7 @@ export class Navigator {
      * @param position A new position to update to
      * @param bearing A new direction to face (N, E, S or W)
      */
-    UpdateLocation(position: Vector2, bearing: Bearing) {
+    UpdateLocation(position: Vector2, bearing: string) {
         this.currentPosition = position;
         this.currentBearing = bearing;
     }
@@ -57,11 +57,11 @@ export class Navigator {
      * @param turnCommand The instruction to turn either 90deg left or 90deg right.
      * @param currentBearing The current direction the rover is facing.
      */
-    Rotate(turnCommand: string, currentBearing: Bearing):Bearing {
+    Rotate(turnCommand: string, currentBearing: string):string {
         //Gets the current index of the current bearing, for some fun numerical rotation.
-        let bearingCounter: number = Object.keys(Bearing).indexOf(currentBearing.toString());
+        let bearingCounter: number = Object.keys(Bearing).indexOf(currentBearing);
         let newBearing: number = 0;
-        
+
         switch(turnCommand) {
             case "L": {
                 //L is spin left 90 degrees, ccw
@@ -92,7 +92,7 @@ export class Navigator {
      * @param bearing The direction of travel.
      * @param currentPosition The current position as a reference point.
      */
-    Move(amount: number, bearing: Bearing, currentPosition: Vector2) {
+    Move(amount: number, bearing: string, currentPosition: Vector2) {
         // Bearing in this case simply tells us which direction we are moving 
         // (the rover may be facing another way, but that's okay, we'll only ever ut the same direction as its curent bearing, but we can support sidestepping or reversing this way)
         var tryPosition = new Vector2(currentPosition.x, currentPosition.y);
