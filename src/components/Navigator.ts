@@ -48,7 +48,6 @@ export class Navigator {
         } else if (command === "L" || command === "R") {
             this.UpdateLocation(undefined, this.Rotate(command, this.currentBearing));
         }
-        console.log(`Nav position updated to: ${this.currentPosition.x}, ${this.currentPosition.y}, ${this.currentBearing}`)
     }
 
     //M is move forward
